@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e2a210ca5a7e450cb6218c37069abbfd" Name="Diagram1" ZoomLevel="74" >
+        <EntityTypeShape EntityType="ClinicModel.Psychologist" Width="1.5" PointX="2.125" PointY="2" />
+        <EntityTypeShape EntityType="ClinicModel.Client" Width="1.5" PointX="5.75" PointY="1.875" />
+        <AssociationConnector Association="ClinicModel.ClientPsychologist" />
+        <EntityTypeShape EntityType="ClinicModel.Session" Width="1.5" PointX="3.875" PointY="4.875" />
+        <AssociationConnector Association="ClinicModel.SessionPsychologist" />
+        <AssociationConnector Association="ClinicModel.SessionClient" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

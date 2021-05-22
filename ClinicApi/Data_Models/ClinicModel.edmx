@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ClinicModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ClinicModelStoreContainer">
+    <EntitySet Name="Psychologists" EntityType="ClinicModel.Store.Psychologists" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Clients" EntityType="ClinicModel.Store.Clients" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sessions" EntityType="ClinicModel.Store.Sessions" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ClientPsychologist" Association="ClinicModel.Store.ClientPsychologist">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Psychologist" EntitySet="Psychologists" />
+    </AssociationSet>
+    <AssociationSet Name="SessionPsychologist" Association="ClinicModel.Store.SessionPsychologist">
+      <End Role="Session" EntitySet="Sessions" />
+      <End Role="Psychologist" EntitySet="Psychologists" />
+    </AssociationSet>
+    <AssociationSet Name="SessionClient" Association="ClinicModel.Store.SessionClient">
+      <End Role="Session" EntitySet="Sessions" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Psychologists">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PsychologistId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sessions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="BookedDate" Type="datetime" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="PsychologistId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <Association Name="ClientPsychologist">
+    <End Role="Client" Type="ClinicModel.Store.Clients" Multiplicity="*" />
+    <End Role="Psychologist" Type="ClinicModel.Store.Psychologists" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Psychologist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="PsychologistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SessionPsychologist">
+    <End Role="Session" Type="ClinicModel.Store.Sessions" Multiplicity="*" />
+    <End Role="Psychologist" Type="ClinicModel.Store.Psychologists" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Psychologist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="PsychologistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SessionClient">
+    <End Role="Session" Type="ClinicModel.Store.Sessions" Multiplicity="*" />
+    <End Role="Client" Type="ClinicModel.Store.Clients" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ClinicModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ClinicModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Psychologists" EntityType="ClinicModel.Psychologist" />
+          <EntitySet Name="Clients" EntityType="ClinicModel.Client" />
+          <AssociationSet Name="ClientPsychologist" Association="ClinicModel.ClientPsychologist">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Psychologist" EntitySet="Psychologists" />
+          </AssociationSet>
+          <EntitySet Name="Sessions" EntityType="ClinicModel.Session" />
+          <AssociationSet Name="SessionPsychologist" Association="ClinicModel.SessionPsychologist">
+            <End Role="Session" EntitySet="Sessions" />
+            <End Role="Psychologist" EntitySet="Psychologists" />
+          </AssociationSet>
+          <AssociationSet Name="SessionClient" Association="ClinicModel.SessionClient">
+            <End Role="Session" EntitySet="Sessions" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Psychologist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="ClinicModel.ClientPsychologist" FromRole="Psychologist" ToRole="Client" />
+          <NavigationProperty Name="Sessions" Relationship="ClinicModel.SessionPsychologist" FromRole="Psychologist" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <NavigationProperty Name="Psychologist" Relationship="ClinicModel.ClientPsychologist" FromRole="Client" ToRole="Psychologist" />
+          <Property Name="PsychologistId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Sessions" Relationship="ClinicModel.SessionClient" FromRole="Client" ToRole="Session" />
+        </EntityType>
+        <Association Name="ClientPsychologist">
+          <End Type="ClinicModel.Client" Role="Client" Multiplicity="*" />
+          <End Type="ClinicModel.Psychologist" Role="Psychologist" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Psychologist">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="PsychologistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="BookedDate" Type="DateTime" Nullable="false" />
+          <Property Name="Type" Type="ClinicModel.Type" Nullable="false" />
+          <NavigationProperty Name="Psychologist" Relationship="ClinicModel.SessionPsychologist" FromRole="Session" ToRole="Psychologist" />
+          <Property Name="PsychologistId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="ClinicModel.SessionClient" FromRole="Session" ToRole="Client" />
+          <Property Name="ClientId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EnumType Name="Type">
+          <Member Name="Video" />
+          <Member Name="Audio" />
+        </EnumType>
+        <Association Name="SessionPsychologist">
+          <End Type="ClinicModel.Session" Role="Session" Multiplicity="*" />
+          <End Type="ClinicModel.Psychologist" Role="Psychologist" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Psychologist">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="PsychologistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SessionClient">
+          <End Type="ClinicModel.Session" Role="Session" Multiplicity="*" />
+          <End Type="ClinicModel.Client" Role="Client" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ClinicModelStoreContainer" CdmEntityContainer="ClinicModelContainer">
+    <EntitySetMapping Name="Psychologists">
+      <EntityTypeMapping TypeName="IsTypeOf(ClinicModel.Psychologist)">
+        <MappingFragment StoreEntitySet="Psychologists">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="IsTypeOf(ClinicModel.Client)">
+        <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PsychologistId" ColumnName="PsychologistId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sessions">
+      <EntityTypeMapping TypeName="IsTypeOf(ClinicModel.Session)">
+        <MappingFragment StoreEntitySet="Sessions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="PsychologistId" ColumnName="PsychologistId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
